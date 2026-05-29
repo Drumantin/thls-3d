@@ -160,12 +160,21 @@
   @media(max-width:720px){
     .sec .name{font-size:24px;}
     .sec .tl{left:20px;top:22px;}
-    .sec .bl{left:16px;right:16px;bottom:104px;min-width:0;padding:14px 16px 12px;}
     .brand{right:18px;top:20px;font-size:9px;}
-    .sec .br{right:18px;bottom:84px;}
-    .sec .big{font-size:clamp(56px,18vw,92px);}
     .rail{display:none;}
-    .credit{font-size:8px;}
+    .credit{font-size:8px;bottom:12px;}
+    /* === вертикальная раскладка низа: цифра НАД панелью, без наложений === */
+    /* большая цифра — выше панели, правее, компактнее */
+    .sec .br{right:18px;left:auto;bottom:236px;align-items:flex-end;text-align:right;}
+    .sec .big{font-size:clamp(46px,13vw,66px);line-height:.86;}
+    .sec .big .u{font-size:.3em;}
+    .sec .blbl{font-size:8px;letter-spacing:.16em;margin-top:6px;}
+    /* спек-панель — внизу во всю ширину, компактная, выше нижнего меню сайта */
+    .sec .bl{left:14px;right:14px;bottom:92px;min-width:0;padding:12px 15px 10px;}
+    .sec .pl{font-size:8px;letter-spacing:.24em;margin-bottom:6px;}
+    .sec .spec{padding:5px 0;gap:10px;}
+    .sec .spec .k{font-size:9px;letter-spacing:.1em;}
+    .sec .spec .v{font-size:11px;}
   }
 </style>
 </head>
