@@ -323,8 +323,10 @@ const bigEls = [...document.querySelectorAll('.big')];
    THREE — renderer / scene / lights
    ============================================================ */
 const canvas = document.getElementById('gl');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+/* Профиль качества: Apple GPU (Metal) тянет полный конвейер; Windows/Android (ANGLE/слабая встройка) — облегчённый */
+const QHI = /Mac|iPhone|iPad|iPod/.test(navigator.platform) || /iPhone|iPad|iPod/.test(navigator.userAgent);
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: QHI, alpha: false, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, QHI ? 2 : 1.25));
 renderer.setSize(innerWidth, innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.04;
@@ -391,7 +393,7 @@ scene.add(glow);
 /* ============================================================
    MASSIVE PARTICLE FIELD (orange + cyan spiral)
    ============================================================ */
-const P_COUNT = REDUCE ? 250 : (MOBILE ? 900 : 3600);
+const P_COUNT = REDUCE ? 250 : (MOBILE ? 900 : (QHI ? 3600 : 1500));
 const pSeed = new Float32Array(P_COUNT * 3);
 const pMix = new Float32Array(P_COUNT);
 for (let i = 0; i < P_COUNT; i++) {
@@ -451,6 +453,7 @@ const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
 const afterimage = new AfterimagePass(0.0);   // speed-trails (damp raised on fast scroll)
 composer.addPass(afterimage);
+afterimage.enabled = QHI;   // тяжёлый feedback-пасс — только на Apple
 const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.24, 0.5, 0.96);
 composer.addPass(bloom);
 
@@ -476,6 +479,7 @@ const Anamorphic = {
 };
 const anamorphicPass = new ShaderPass(Anamorphic);
 composer.addPass(anamorphicPass);
+anamorphicPass.enabled = QHI;   // анаморфные блики — только на Apple
 composer.addPass(new OutputPass());
 
 /* radial depth-of-field — sharp centered subject, soft blurred surroundings (bokeh feel) */
@@ -781,7 +785,12 @@ function shadowTex() {
 function buildFloor(y) {
   // reflective studio floor — faces up, so it only shows from above and vanishes at the low hero angle
   const geo = new THREE.CircleGeometry(modelRadius * 5.5, 64);
-  floorRef = new Reflector(geo, { textureWidth: 1024, textureHeight: 1024, color: 0x0a0a0b });
+  if (QHI) {
+    floorRef = new Reflector(geo, { textureWidth: 1024, textureHeight: 1024, color: 0x0a0a0b });
+  } else {
+    // без Reflector — не рендерим сцену второй раз; простой тёмный матовый пол
+    floorRef = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x0a0a0b, roughness: 0.78, metalness: 0.25 }));
+  }
   floorRef.rotation.x = -Math.PI / 2;
   floorRef.position.y = y;
   scene.add(floorRef);
@@ -916,6 +925,8 @@ function triggerCount(i) {
    ============================================================ */
 const clock = new THREE.Clock();
 let lastScroll = scrollY, scrollVel = 0, dissCur = 0, lastT = 0, powerOnStart = -1e9;
+/* FPS-сторож: если рендер уходит в слайд-шоу (software/слабый GPU) — замораживаем последний кадр */
+let __frozen = false, __fpsN = 0, __fpsT0 = performance.now(), __fpsWin = 0;
 const camDir = new THREE.Vector3();
 const camRight = new THREE.Vector3();
 const worldUp = new THREE.Vector3(0, 1, 0);
@@ -928,7 +939,16 @@ if (!MOBILE) addEventListener('pointermove', (e) => {
 }, { passive: true });
 
 function tick() {
+  if (__frozen) return;                     // слайд-шоу → оставляем последний кадр статичным
   requestAnimationFrame(tick);
+  // замер fps; первые ~5с (2 окна) — разогрев/intro, не морозим. Дальше fps<16 → заморозка
+  __fpsN++;
+  { const __nm = performance.now();
+    if (__nm - __fpsT0 >= 2500) {
+      const __fps = __fpsN * 1000 / (__nm - __fpsT0); __fpsWin++;
+      if (__fpsWin >= 2 && __fps < 16) __frozen = true;
+      __fpsT0 = __nm; __fpsN = 0;
+    } }
   const t = clock.getElapsedTime();
   const dt = Math.min(Math.max(t - lastT, 0.0001), 0.05); lastT = t;
 
