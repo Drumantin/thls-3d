@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>iPhone 17 Pro Max — Experience (Lite)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{background:#070707;}
+  body{background:#070707;overflow-x:hidden;}
+  #ltrack{position:relative;height:1000vh;}
+  #lstage{position:sticky;top:0;height:100vh;width:100%;overflow:hidden;background:#070707;}
+  #lc{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  #lload{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    background:#070707;z-index:5;transition:opacity .6s ease;
+    font-family:"JetBrains Mono",ui-monospace,monospace;letter-spacing:.2em;color:rgba(244,241,238,.5);font-size:11px;}
+  #lload.hide{opacity:0;pointer-events:none;}
+  .lring{width:36px;height:36px;border:1.5px solid rgba(255,255,255,.12);border-top-color:#FF6A1A;border-radius:50%;animation:lspin 1s linear infinite;}
+  @keyframes lspin{to{transform:rotate(360deg);}}
+  @media(prefers-reduced-motion:reduce){ #ltrack{height:130vh;} }
+</style>
+</head>
+<body>
+  <div id="ltrack">
+    <div id="lstage">
+      <canvas id="lc"></canvas>
+      <div id="lload"><div class="lring"></div><div id="lpct">ЗАГРУЗКА 0%</div></div>
+    </div>
+  </div>
+<script>
+(function(){
+  'use strict';
+  const N = 96;
+  const BASE = 'https://cdn.jsdelivr.net/gh/Drumantin/thls-3d@main/frames/';
+  const FW = 1600, FH = 900, ASPECT = FW / FH;
+
+  const track  = document.getElementById('ltrack');
+  const stage  = document.getElementById('lstage');
+  const canvas = document.getElementById('lc');
+  const ctx    = canvas.getContext('2d', { alpha:false });
+  const loadEl = document.getElementById('lload');
+  const pctEl  = document.getElementById('lpct');
+
+  // встроенный режим: прогресс от родителя через postMessage
+  let extProg = null;
+  addEventListener('message', e => {
+    const d = e.data;
+    if (d && d.iph3d === 1 && typeof d.p === 'number') extProg = d.p;
+  });
+
+  const imgs = new Array(N);
+  let loaded = 0, ready = false, lastF = -1;
+
+  function fit(){
+    const r = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.round(r.width * dpr), h = Math.round(r.height * dpr);
+    if (canvas.width !== w || canvas.height !== h){
+      canvas.width = w; canvas.height = h;
+      ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+      lastF = -1;
+    }
+  }
+  window.addEventListener('resize', () => { fit(); draw(); });
+
+  function progress(){
+    if (extProg !== null) return Math.max(0, Math.min(1, extProg));
+    const max = track.offsetHeight - window.innerHeight;
+    if (max <= 0) return 0;
+    return Math.max(0, Math.min(1, -track.getBoundingClientRect().top / max));
+  }
+
+  function draw(){
+    if (!ready) return;
+    const p = progress();
+    const idx = Math.min(N - 1, Math.max(0, Math.round(p * (N - 1))));
+    if (idx === lastF) return;
+    lastF = idx;
+    const im = imgs[idx];
+    if (!im || !im.complete) return;
+    const cw = canvas.width, ch = canvas.height, ca = cw / ch;
+    let dw, dh, dx, dy;
+    if (ca > ASPECT){ dw = cw; dh = cw / ASPECT; dx = 0; dy = (ch - dh) / 2; }
+    else { dh = ch; dw = ch * ASPECT; dy = 0; dx = (cw - dw) / 2; }
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.drawImage(im, dx, dy, dw, dh);
+  }
+
+  // единый rAF-цикл: покрывает и обычный скролл, и встроенный postMessage
+  function loop(){ requestAnimationFrame(loop); draw(); }
+
+  function onAllLoaded(){
+    ready = true; fit(); draw();
+    loadEl.classList.add('hide'); setTimeout(() => loadEl.style.display = 'none', 600);
+  }
+
+  // префетч всех кадров
+  for (let i = 0; i < N; i++){
+    const im = new Image();
+    im.decoding = 'async';
+    im.onload = () => { loaded++; pctEl.textContent = 'ЗАГРУЗКА ' + Math.round(loaded / N * 100) + '%'; if (loaded === N) onAllLoaded(); };
+    im.onerror = () => { loaded++; if (loaded === N) onAllLoaded(); };
+    im.src = BASE + 'f_' + String(i).padStart(3, '0') + '.jpg';
+    imgs[i] = im;
+  }
+
+  fit();
+  loop();
+})();
+</script>
+</body>
+</html>
