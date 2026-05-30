@@ -45,6 +45,7 @@
   #loader{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
     gap:18px;background:var(--bg);z-index:45;transition:opacity .8s ease;}
   #loader.hide{opacity:0;pointer-events:none;}
+  #loader .ldr-ring, #loader .ldr-txt, #loader .ldr-pct{display:none;}
   .ldr-ring{width:38px;height:38px;border:1.5px solid var(--hair);border-top-color:var(--accent);border-radius:50%;
     animation:spin 1s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg);}}
@@ -80,7 +81,8 @@
   .sec .kicker{display:flex;align-items:center;gap:14px;}
   .sec .num{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--accent);}
   .sec .num::after{content:"";display:inline-block;width:46px;height:1px;background:var(--accent);vertical-align:middle;margin-left:14px;opacity:.6;}
-  .sec .name{font-family:var(--sans);font-weight:700;font-size:34px;letter-spacing:-.02em;margin-top:14px;line-height:1.02;}
+  .sec .name{font-family:var(--sans);font-weight:700;font-size:31px;letter-spacing:-.02em;margin-top:14px;line-height:1.04;
+    max-width:8ch;text-wrap:balance;text-shadow:0 2px 18px rgba(0,0,0,.6);}
   @keyframes nameIn{
     0%{transform:translateY(26px) scale(.965);}
     58%{transform:translateY(-3px) scale(1.012);}
@@ -131,6 +133,15 @@
   .sec .blbl{font-family:var(--mono);font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-top:12px;}
 
   /* ---- finale CTA scene ---- */
+  #beatFade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;z-index:23;}
+  #titleCard{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    z-index:46;pointer-events:none;background:radial-gradient(120% 90% at 50% 50%, rgba(0,0,0,0) 38%, rgba(0,0,0,.55) 100%);}
+  #titleCard .tc-inner{display:flex;flex-direction:column;align-items:center;text-align:center;}
+  #titleCard .tc-line{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin-bottom:26px;}
+  #titleCard .tc-name{font-family:var(--sans);font-weight:800;font-size:clamp(34px,6vw,82px);letter-spacing:-.04em;line-height:1;
+    background:linear-gradient(180deg,#fff,rgba(244,241,238,.55));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  #titleCard .tc-sub{font-family:var(--mono);font-size:clamp(9px,1vw,12px);letter-spacing:.3em;text-transform:uppercase;
+    color:var(--dim);margin-top:20px;white-space:nowrap;}
   .sec-cta .cta{position:absolute;left:0;right:0;bottom:9vh;
     display:flex;flex-direction:column;align-items:center;text-align:center;gap:0;padding:0 24px;}
   .cta-kick{font-family:var(--mono);font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;}
@@ -157,27 +168,30 @@
   #hint .ln{width:1px;height:32px;background:linear-gradient(var(--accent),transparent);animation:drop 1.8s ease-in-out infinite;}
   @keyframes drop{0%,100%{opacity:.2;transform:scaleY(.5);transform-origin:top;}50%{opacity:1;transform:scaleY(1);}}
 
+  /* exploded-view labels */
+  .exDot{position:absolute;left:-3.5px;top:-3.5px;width:7px;height:7px;border-radius:50%;background:#7fd0ff;box-shadow:0 0 10px rgba(127,208,255,.95);}
+  .exLeader{position:absolute;left:0;width:1px;background:linear-gradient(rgba(127,208,255,.7),rgba(127,208,255,.15));}
+  .exTxt{position:absolute;left:0;white-space:nowrap;transform:translate(-50%,-50%);padding:3px 9px;border-radius:6px;
+    background:rgba(10,16,22,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(127,208,255,.2);
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:#e7f2ff;text-shadow:0 1px 6px rgba(0,0,0,.7);}
+
   @media(max-width:720px){
-    .sec .name{font-size:24px;}
+    .sec .name{font-size:22px;}
+    .sec .tag{font-size:8.5px;}
     .sec .tl{left:20px;top:22px;}
     .brand{right:18px;top:20px;font-size:9px;}
     .rail{display:none;}
     .credit{font-size:8px;bottom:12px;}
-    /* === вертикальная раскладка низа: цифра НАД панелью, без наложений === */
-    /* большая цифра — выше панели, правее, компактнее */
+    /* вертикальная раскладка низа: большая цифра НАД панелью, без наложений */
     .sec .br{right:16px;left:auto;bottom:258px;align-items:flex-end;text-align:right;}
     .sec .big{font-size:clamp(40px,11vw,56px);line-height:.84;}
     .sec .big .u{font-size:.3em;}
     .sec .blbl{font-size:7px;letter-spacing:.14em;margin-top:5px;}
-    /* спек-панель — внизу во всю ширину, компактная, выше нижнего меню сайта */
     .sec .bl{left:14px;right:14px;bottom:90px;min-width:0;padding:11px 14px 9px;}
     .sec .pl{font-size:7.5px;letter-spacing:.22em;margin-bottom:5px;}
     .sec .spec{padding:4px 0;gap:10px;}
     .sec .spec .k{font-size:8.5px;letter-spacing:.08em;}
     .sec .spec .v{font-size:10px;}
-    /* верхний заголовок секции тоже компактнее */
-    .sec .name{font-size:22px;}
-    .sec .tag{font-size:8.5px;}
   }
 </style>
 </head>
@@ -186,15 +200,22 @@
     <div id="stage">
       <canvas id="gl"></canvas>
 
-      <div class="cine-bar top" id="cineTop"></div>
-      <div class="cine-bar bot" id="cineBot"></div>
-
       <div id="hud">
         <div class="vfade"></div>
         <div id="sections"></div>
       </div>
 
       <div id="prog"></div>
+
+      <div id="beatFade"></div>
+
+      <div id="titleCard">
+        <div class="tc-inner">
+          <div class="tc-line"></div>
+          <div class="tc-name">iPhone 17 Pro Max</div>
+          <div class="tc-sub">Aerospace aluminium · A19 Pro</div>
+        </div>
+      </div>
 
       <div id="loader">
         <div class="ldr-ring"></div>
@@ -223,7 +244,6 @@ import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUnifo
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { AfterimagePass } from 'three/addons/postprocessing/AfterimagePass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
@@ -234,11 +254,17 @@ const MOBILE = matchMedia('(max-width:720px)').matches || (('ontouchstart' in wi
 const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // adaptive track length
-document.getElementById('track').style.height = (MOBILE ? 700 : 1000) + 'vh';
+document.getElementById('track').style.height = (MOBILE ? 1100 : 1560) + 'vh';
 
 const COL_ORANGE = new THREE.Color('#FF6A1A');
 const COL_CYAN   = new THREE.Color('#14E0C8');
 const COL_VIOLET = new THREE.Color('#8A6CFF');
+// colorway finishes for the body switch (null = keep model's native Cosmic-Orange base)
+// official Apple finishes: Deep Blue #32374A · Silver #F5F5F5 · Cosmic Orange #F77E2D
+const FINISH = [null, new THREE.Color('#32374A'), new THREE.Color('#E9EAEC')]; // Cosmic Orange · Deep Blue · Silver
+const FINISH_NAME = ['Cosmic Orange', 'Deep Blue', 'Silver'];
+const _fa = new THREE.Color(), _fb = new THREE.Color(), _ft = new THREE.Color();
+const _projV = new THREE.Vector3(), _sparkV = new THREE.Vector3();
 
 /* ============================================================
    SECTION DATA  (HUD content + camera keyframes)
@@ -254,35 +280,61 @@ const SECTIONS = [
     big:{ to:17, unit:'', label:'Поколение' },
     theta: AZ_CAM-104, phi:80, dist:1.42, fov:31, roll:-4, ty:0.0, tx:0.0 },     // establishing far 3/4
 
-  { num:'02', name:'A19 Pro', tag:'3 нм · нейропроцессор',
-    panel:'SILICON',
-    specs:[['CPU','<em>6</em> ядер'],['GPU','<em>6</em> ядер'],['Техпроцесс','3 нм'],['Прирост','<em>+40%</em>']],
-    big:{ to:6, unit:'', label:'Ядер CPU' },
-    theta: AZ_CAM-50, phi:58, dist:1.12, fov:32, roll:6, ty:0.05, tx:0.0 },       // high orbital
+  { num:'02', name:'Cosmic Orange', tag:'Heat-forged aluminium',
+    panel:'FINISH', specs:[['Финиш','<em>COSMIC ORANGE</em>'],['Корпус','АЛЮМИНИЙ'],['Покрытие','МАТОВОЕ']],
+    colors:true, fin:0,
+    theta: 150, phi:90, dist:1.46, fov:30, roll:0, ty:0.0, tx:0.0 },       // turntable start
 
-  { num:'03', name:'Камера', tag:'Pro Fusion System',
+  { num:'03', name:'Deep Blue', tag:'Heat-forged aluminium',
+    panel:'FINISH', specs:[['Финиш','<em>DEEP BLUE</em>'],['Корпус','АЛЮМИНИЙ'],['Покрытие','МАТОВОЕ']],
+    colors:true, fin:1,
+    theta: 510, phi:90, dist:1.46, fov:30, roll:0, ty:0.0, tx:0.0 },       // +360° full turn
+
+  { num:'04', name:'Silver', tag:'Heat-forged aluminium',
+    panel:'FINISH', specs:[['Финиш','<em>SILVER</em>'],['Корпус','АЛЮМИНИЙ'],['Покрытие','МАТОВОЕ']],
+    colors:true, fin:2,
+    theta: 870, phi:90, dist:1.46, fov:30, roll:0, ty:0.0, tx:0.0 },       // +360° full turn
+
+  { num:'05', name:'A19 Pro', tag:'3 нм · разбор конструкции',
+    panel:'SILICON',
+    specs:[['CPU','<em>6</em> ядер'],['GPU','<em>6</em> ядер'],['Vapor chamber','×1'],['Аккумулятор','4823 мА·ч']],
+    big:{ to:6, unit:'', label:'Ядер CPU' },
+    explode:true,
+    theta: 758, phi:82, dist:1.92, fov:34, roll:0, ty:0.0, tx:0.0 },       // (=38°) side 3/4 — layers fan out along X
+
+  { num:'06', name:'Камера', tag:'Pro Fusion System',
     panel:'OPTICS',
     specs:[['Основной','<em>48</em> МП'],['Ультраширок','48 МП'],['Телефото','48 МП · 8×'],['Фронтальная','18 МП']],
     big:{ to:48, unit:'МП', label:'Pro сенсор' },
-    theta: AZ_CAM, phi:73, dist:0.60, fov:26, roll:-4, ty:0.46, tx:-0.03 },        // MACRO on camera block
+    macro:true,
+    theta: 771.6, phi:73, dist:0.60, fov:26, roll:-4, ty:0.46, tx:-0.03 },        // (=51.6°) MACRO on camera block
 
-  { num:'04', name:'Дисплей', tag:'Super Retina XDR',
+  { num:'07', name:'Дисплей', tag:'Super Retina XDR',
     panel:'DISPLAY',
     specs:[['Диагональ','6.9″ OLED'],['Разрешение','2868×1320'],['Частота','120 Гц'],['Яркость','<em>3000</em> нит']],
     big:{ to:3000, unit:'нит', label:'Пиковая яркость' },
-    theta: 270, phi:90, dist:1.02, fov:30, roll:0, ty:-0.02, tx:0.0 },       // FRONT-ON (screen faces -X ≈ 270°)
+    display:true,
+    theta: 990, phi:90, dist:1.02, fov:30, roll:0, ty:-0.02, tx:0.0 },       // (=270°) FRONT-ON (screen faces -X)
 
-  { num:'05', name:'Автономность', tag:'All-day battery',
+  { num:'08', name:'Каждая деталь', tag:'Точность · до микрона',
     panel:'POWER',
     specs:[['Видео','до <em>39</em> ч'],['Разъём','USB-C 3.2'],['Чип','A19 Pro']],
     big:{ to:39, unit:'ч', label:'Воспроизведение видео' },
-    theta: 320, phi:112, dist:1.26, fov:36, roll:7, ty:-0.12, tx:0.0 },   // low heroic angle (front-right)
+    engrave:true,
+    theta: 815, phi:91, dist:0.92, fov:28, roll:0, ty:-0.26, tx:0.0 },   // (=95°) close near-straight back — engraving hero
 
-  { num:'06', name:'iPhone 17 Pro Max', tag:'',
+  { num:'09', name:'iPhone 17 Pro Max', tag:'',
     cta:true, hero:'iPhone 17 Pro Max', sub:'Алюминий. A19 Pro. Pro Fusion камера.',
-    theta: 244, phi:84, dist:1.40, fov:28, roll:0, ty:-0.30, tx:0.0 },     // hero finale (3/4 front, screen lit)
+    theta: 964, phi:84, dist:1.40, fov:28, roll:0, ty:-0.30, tx:0.0 },     // (=244°) hero finale
 ];
 const NSEG = SECTIONS.length - 1;
+const IDX = {
+  colors:  SECTIONS.findIndex((s) => s.colors),
+  explode: SECTIONS.findIndex((s) => s.explode),
+  macro:   SECTIONS.findIndex((s) => s.macro),
+  display: SECTIONS.findIndex((s) => s.display),
+  engrave: SECTIONS.findIndex((s) => s.engrave),
+};
 
 /* ============================================================
    BUILD HUD DOM
@@ -318,6 +370,10 @@ SECTIONS.forEach((s) => {
   secEls.push(el);
 });
 const bigEls = [...document.querySelectorAll('.big')];
+const titleCardEl = document.getElementById('titleCard');
+const tcLineEl = titleCardEl.querySelector('.tc-line');
+const beatFadeEl = document.getElementById('beatFade');
+let titleDone = false;
 
 /* ============================================================
    THREE — renderer / scene / lights
@@ -333,7 +389,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color('#070707');
 scene.fog = new THREE.FogExp2(0x070707, 0.045);
 
-const camera = new THREE.PerspectiveCamera(33, innerWidth / innerHeight, 0.01, 200);
+const camera = new THREE.PerspectiveCamera(33, innerWidth / innerHeight, 0.06, 200);
 camera.position.set(0, 0, 8);
 
 // environment reflections
@@ -408,12 +464,12 @@ pGeo.setDrawRange(0, P_COUNT);
 const pMat = new THREE.ShaderMaterial({
   transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   uniforms: {
-    uTime: { value: 0 }, uScroll: { value: 0 }, uBurst: { value: 0 }, uConverge: { value: 0 },
+    uTime: { value: 0 }, uScroll: { value: 0 }, uBurst: { value: 0 }, uConverge: { value: 0 }, uFade: { value: 1 },
     uBase: { value: 1.5 }, uPR: { value: Math.min(devicePixelRatio, 2) },
     cOrange: { value: COL_ORANGE }, cCyan: { value: COL_CYAN },
   },
   vertexShader: `
-    uniform float uTime, uScroll, uBurst, uConverge, uBase, uPR;
+    uniform float uTime, uScroll, uBurst, uConverge, uBase, uPR, uFade;
     attribute vec3 aSeed; attribute float aMix;
     varying vec3 vCol; varying float vA;
     void main(){
@@ -429,7 +485,7 @@ const pMat = new THREE.ShaderMaterial({
       gl_PointSize = uBase * (1.4 + sr * 4.0) * tw * uPR * (1.0 / max(-mv.z, 0.1));
       gl_Position = projectionMatrix * mv;
       vCol = mix(vec3(1.0,0.42,0.10), vec3(0.08,0.88,0.78), aMix);
-      vA = (0.30 + 0.55 * tw) * (1.0 - uBurst * 0.2);
+      vA = (0.30 + 0.55 * tw) * (1.0 - uBurst * 0.2) * uFade;
     }`,
   fragmentShader: `
     varying vec3 vCol; varying float vA;
@@ -449,8 +505,6 @@ scene.add(particles);
    ============================================================ */
 const composer = new EffectComposer(renderer);
 composer.addPass(new RenderPass(scene, camera));
-const afterimage = new AfterimagePass(0.0);   // speed-trails (damp raised on fast scroll)
-composer.addPass(afterimage);
 const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.24, 0.5, 0.96);
 composer.addPass(bloom);
 
@@ -525,6 +579,26 @@ const GrainVignette = {
 const grainPass = new ShaderPass(GrainVignette);
 composer.addPass(grainPass);
 
+/* directional motion blur — engages only on fast scroll (sells speed, no idle cost) */
+const MotionBlur = {
+  uniforms: { tDiffuse: { value: null }, uAmt: { value: 0 }, uDir: { value: new THREE.Vector2(1, 0) }, uTexel: { value: new THREE.Vector2(1 / innerWidth, 1 / innerHeight) } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `
+    uniform sampler2D tDiffuse; uniform float uAmt; uniform vec2 uDir, uTexel; varying vec2 vUv;
+    void main(){
+      if (uAmt < 0.001) { gl_FragColor = texture2D(tDiffuse, vUv); return; }
+      vec2 step = uDir * uAmt * 26.0 * uTexel;
+      vec4 sum = vec4(0.0); float w = 0.0;
+      for (float i = -4.0; i <= 4.0; i += 1.0) {
+        float wi = 1.0 - abs(i) / 5.0;
+        sum += texture2D(tDiffuse, vUv + step * (i / 4.0)) * wi; w += wi;
+      }
+      gl_FragColor = sum / w;
+    }`
+};
+const motionPass = new ShaderPass(MotionBlur);
+composer.addPass(motionPass);
+
 /* ============================================================
    LOAD MODEL  (+ build dissolve point cloud from surface)
    ============================================================ */
@@ -539,7 +613,15 @@ let screenMesh = null;
 let screenPlane = null;
 let wallpaperTex = null;
 let floorRef = null, groundShadow = null;
+let dropletGroup = null, droplets = [];
 let introStart = 0;
+// explode / x-ray / color / engraving state
+let explodeLayers = [];      // { mesh, factor, base:Vector3, dir:Vector3 }
+let internalLayers = [];     // synthetic glowing internals { mesh, factor, base }
+let bodyMats = [];           // materials whose color is swapped by the colorway switch
+let engraveMat = null, engraveCanvas = null, engraveCtx = null, sparkPts = null, sparkMat = null;
+const PHONE_X = new THREE.Vector3(1, 0, 0);   // world thickness axis (front -X, back +X)
+let explodeDist = 0.5, curExplode = 0;        // per-unit factor distance, current 0..1 amount
 
 const draco = new DRACOLoader().setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/');
 const gltfLoader = new GLTFLoader();
@@ -573,8 +655,20 @@ gltfLoader.load(MODEL_URL, (gltf) => {
         if (m.metalness !== undefined) m.metalness = 0.4;
         if (m.roughness !== undefined) m.roughness = 0.45;
       }
+      // lidar sensor (black.002) is coplanar with the camera-bump panel → z-fighting (running stripes).
+      // bias it forward in the depth buffer so it always wins cleanly.
+      if (/black\.002/.test((m.name || '').toLowerCase())) {
+        m.polygonOffset = true; m.polygonOffsetFactor = -4; m.polygonOffsetUnits = -4;
+      }
       m.transparent = true;            // allow dissolve fade
       m._baseOpacity = (m.opacity !== undefined) ? m.opacity : 1;
+      // body/frame materials whose finish the colorway switch tints — detect by warm aluminium tone
+      if (m.color && m.color.r > 0.45 && m.color.b < m.color.r * 0.72 && m.color.g < m.color.r) {
+        m._baseColor = m.color.clone();
+        m._baseMetal = m.metalness;
+        m._baseRough = m.roughness;
+        bodyMats.push(m);
+      }
       m.needsUpdate = true;
       phoneMats.push(m);
     });
@@ -602,6 +696,7 @@ gltfLoader.load(MODEL_URL, (gltf) => {
   // glow + particle scale relative to model
   glow.scale.setScalar(modelRadius * 6.5);
   pMat.uniforms.uBase.value = modelRadius;
+  explodeDist = modelRadius * 0.34;   // per-factor separation distance for the exploded view
   buildFloor(box.min.y * 1.002);
   buildShafts();
 
@@ -609,6 +704,10 @@ gltfLoader.load(MODEL_URL, (gltf) => {
   buildDissolve(model);
   // ---- build the controllable display plane exactly on the screen mesh ----
   buildScreenPlane();
+  // ---- exploded view layers + synthetic internals + laser-engrave overlay ----
+  try { buildExplode(model, box); } catch (e) { console.error('buildExplode failed', e); window.__buildErr = 'explode: ' + (e && e.message); }
+  try { buildEngrave(model, box); } catch (e) { console.error('buildEngrave failed', e); window.__buildErr = (window.__buildErr || '') + ' engrave: ' + (e && e.message); }
+  try { buildDroplets(box); } catch (e) { console.error('buildDroplets failed', e); }
 
   ready = true;
   introStart = REDUCE ? -99999 : performance.now();
@@ -817,8 +916,219 @@ function buildShafts() {
     sh.position.set(d.x, modelRadius * 1.2, -modelRadius * 1.5);
     sh.rotation.z = d.rot;
     sh.renderOrder = -1;
+    sh.userData.baseOp = d.op;
     scene.add(sh); shafts.push(sh);
   });
+}
+
+/* ============================================================
+   EXPLODED VIEW  +  SYNTHETIC INTERNALS  (X-ray beat)
+   real shell meshes separate along world-X (thickness);
+   glowing internal slabs (A19 / battery / vapor chamber) fan out between them
+   ============================================================ */
+let explodeLabels = [];
+function slab(w, h, makeTex, glowCol) {
+  const tex = makeTex();
+  const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0,
+    depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+  const geo = new THREE.PlaneGeometry(w, h);
+  const m = new THREE.Mesh(geo, mat);
+  m.rotation.y = Math.PI / 2;       // face normal along X (slab perpendicular to thickness)
+  m.renderOrder = 6;
+  // additive glow halo behind the slab
+  const halo = new THREE.Mesh(geo.clone(), new THREE.MeshBasicMaterial({ map: tex, transparent: true,
+    opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false, side: THREE.DoubleSide, toneMapped: false, color: glowCol }));
+  m.add(halo); m.userData.halo = halo;
+  return m;
+}
+function texChip() {
+  const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d');
+  g.fillStyle = '#0a0f14'; g.fillRect(0, 0, 256, 256);
+  g.fillStyle = '#10202a'; g.fillRect(40, 40, 176, 176);
+  g.strokeStyle = '#19e6d2'; g.lineWidth = 2;
+  for (let i = 0; i <= 8; i++) { const t = 40 + i * 22; g.beginPath(); g.moveTo(t, 40); g.lineTo(t, 216); g.moveTo(40, t); g.lineTo(216, t); g.stroke(); }
+  g.fillStyle = '#0c1418'; g.fillRect(86, 86, 84, 84);
+  g.fillStyle = '#19e6d2'; g.font = '700 26px JetBrains Mono, monospace'; g.textAlign = 'center'; g.fillText('A19', 128, 122); g.font = '700 17px JetBrains Mono'; g.fillText('PRO', 128, 146);
+  // pins
+  g.fillStyle = '#caa15a'; for (let i = 0; i < 10; i++) { g.fillRect(40 + i * 19, 20, 10, 16); g.fillRect(40 + i * 19, 220, 10, 16); }
+  return new THREE.CanvasTexture(c);
+}
+function texBattery() {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 512; const g = c.getContext('2d');
+  const grd = g.createLinearGradient(0, 0, 0, 512); grd.addColorStop(0, '#2a1605'); grd.addColorStop(0.5, '#3a1f08'); grd.addColorStop(1, '#1c0f04');
+  g.fillStyle = grd; g.fillRect(0, 0, 256, 512);
+  g.strokeStyle = 'rgba(255,150,60,0.5)'; g.lineWidth = 3; g.strokeRect(14, 14, 228, 484);
+  g.fillStyle = 'rgba(255,150,60,0.9)'; g.font = '600 22px JetBrains Mono, monospace'; g.textAlign = 'center';
+  g.save(); g.translate(128, 256); g.fillText('Li-Ion', 0, -8); g.fillText('4823 mAh', 0, 24); g.restore();
+  return new THREE.CanvasTexture(c);
+}
+function texVapor() {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 512; const g = c.getContext('2d');
+  const grd = g.createLinearGradient(0, 0, 256, 512); grd.addColorStop(0, '#0c1c26'); grd.addColorStop(0.5, '#13313f'); grd.addColorStop(1, '#0c1c26');
+  g.fillStyle = grd; g.fillRect(0, 0, 256, 512);
+  g.strokeStyle = 'rgba(120,200,255,0.35)'; g.lineWidth = 6;
+  for (let i = 0; i < 5; i++) { g.beginPath(); g.moveTo(40 + i * 44, 30); g.lineTo(40 + i * 44, 482); g.stroke(); }
+  return new THREE.CanvasTexture(c);
+}
+
+function buildExplode(model, box) {
+  let camMesh = null;
+  const W = (box.max.z - box.min.z), H = (box.max.y - box.min.y);
+  const factorFor = (nm) => {
+    nm = nm.toLowerCase();
+    if (/lensinglass/.test(nm)) return 5.0;       // cameras (back, outermost)
+    if (/backpanel/.test(nm)) return 4.0;         // back glass
+    if (/screen/.test(nm)) return -2.4;           // OLED display
+    if (/glass\.002/.test(nm)) return -3.6;       // front cover glass
+    return 0;                                     // chassis / frame / body stay anchored
+  };
+  model.traverse((o) => {
+    if (!o.isMesh) return;
+    const mats = Array.isArray(o.material) ? o.material : [o.material];
+    const nm = mats.map((m) => m && m.name).join(' ') + ' ' + (o.name || '');
+    if (/backpanel/.test(nm.toLowerCase())) camMesh = o;   // camera-bump plate (upper back) — label anchor
+    const wq = new THREE.Quaternion(); o.parent.getWorldQuaternion(wq);
+    const ws = new THREE.Vector3(); o.parent.getWorldScale(ws);
+    const dir = PHONE_X.clone().applyQuaternion(wq.invert());
+    dir.set(dir.x / ws.x, dir.y / ws.y, dir.z / ws.z);
+    explodeLayers.push({ mesh: o, factor: factorFor(nm), base: o.position.clone(), dir });
+  });
+  // synthetic internal slabs (scene space, exploded along world-X)
+  const defs = [
+    { f: 3.0, w: W * 0.92, h: H * 0.9,  tex: texVapor,   col: 0x4aa6ff, label: 'Vapor Chamber',  ly: 0,     dy: 120 },
+    { f: 2.1, w: W * 0.82, h: H * 0.74, tex: texBattery, col: 0xff8a2a, label: 'Аккумулятор',     ly: -0.05, dy: 188 },
+    { f: 1.2, w: W * 0.42, h: W * 0.42, tex: texChip,    col: 0x19e6d2, label: 'A19 Pro',         ly: 0.18,  dy: -150 },
+  ];
+  defs.forEach((d) => {
+    const m = slab(d.w, d.h, d.tex, d.col);
+    m.position.set(0, box.getCenter(new THREE.Vector3()).y + d.ly * H, 0);
+    m.userData.base = m.position.clone();
+    m.userData.factor = d.f;
+    scene.add(m);
+    internalLayers.push(m);
+    explodeLabels.push({ text: d.label, get: () => m.position, dy: d.dy });
+  });
+  // labels anchored to the real layer meshes (move with the explode automatically)
+  const _wp = new THREE.Vector3();
+  if (screenMesh) explodeLabels.push({ text: 'OLED-дисплей', get: () => screenMesh.getWorldPosition(_wp), dy: -96 });
+  if (camMesh) {
+    const _camBox = new THREE.Box3(), _camC = new THREE.Vector3();
+    explodeLabels.push({ text: 'Камеры', get: () => { _camBox.setFromObject(camMesh); return _camBox.getCenter(_camC); }, dy: -86 });
+  }
+  buildExplodeLabels();
+}
+const _anchTmp = new THREE.Vector3();
+function screenWorldAnchor(factor) {
+  // world point at given explode factor along X through model center, at current explode amount
+  return _anchTmp.set(explodeDist * factor * curExplode, 0, 0);
+}
+
+function buildExplodeLabels() {
+  const wrap = document.createElement('div'); wrap.id = 'exLabels';
+  wrap.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:18;';
+  document.getElementById('hud').appendChild(wrap);
+  explodeLabels.forEach((L) => {
+    const el = document.createElement('div');
+    el.className = 'exLabel';
+    el.style.cssText = 'position:absolute;opacity:0;will-change:transform,opacity;';
+    el.innerHTML = `<span class="exDot"></span><span class="exLeader"></span><span class="exTxt">${L.text}</span>`;
+    wrap.appendChild(el);
+    L.el = el; L.leader = el.querySelector('.exLeader'); L.txt = el.querySelector('.exTxt');
+  });
+}
+
+/* ============================================================
+   LASER ENGRAVING (back panel)  +  spark particles
+   ============================================================ */
+function buildEngrave(model, box) {
+  const cw = 1024, ch = 256;
+  engraveCanvas = document.createElement('canvas'); engraveCanvas.width = cw; engraveCanvas.height = ch;
+  engraveCtx = engraveCanvas.getContext('2d');
+  const tex = new THREE.CanvasTexture(engraveCanvas);
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  engraveMat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity: 0,
+    depthWrite: false, side: THREE.DoubleSide, toneMapped: false, blending: THREE.AdditiveBlending });
+  const W = (box.max.z - box.min.z), H = (box.max.y - box.min.y);
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(W * 0.62, W * 0.62 * ch / cw), engraveMat);
+  // on the back face (+X), lower third, normal +X
+  plane.rotation.set(0, -Math.PI / 2, 0);
+  plane.scale.x = -1;   // un-mirror the text for the +X viewpoint
+  plane.position.set(box.max.x + 0.004, box.getCenter(new THREE.Vector3()).y - H * 0.3, 0);
+  plane.renderOrder = 9;
+  scene.add(plane);
+  engraveMat.userData.plane = plane;
+  // spark particles (small, additive), follow the laser head
+  const N = 90;
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(N * 3), 3));
+  g.setAttribute('aSeed', new THREE.BufferAttribute(new Float32Array(Array.from({ length: N }, () => Math.random())), 1));
+  sparkMat = new THREE.PointsMaterial({ size: 0.03, color: 0xffd28a, transparent: true, opacity: 0,
+    blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true });
+  sparkPts = new THREE.Points(g, sparkMat);
+  sparkPts.frustumCulled = false;
+  sparkPts.userData = { plane, W, H, box };
+  scene.add(sparkPts);
+}
+let engraveDrawn = -1;
+function drawEngrave(prog) {
+  if (!engraveCtx) return;
+  const cw = engraveCanvas.width, ch = engraveCanvas.height;
+  engraveCtx.clearRect(0, 0, cw, ch);
+  engraveCtx.textAlign = 'left'; engraveCtx.textBaseline = 'middle';
+  engraveCtx.font = '600 76px Inter, system-ui, sans-serif';
+  const txt = 'iPhone 17 Pro Max';
+  const full = engraveCtx.measureText(txt).width;
+  const x0 = (cw - full) / 2, y = ch / 2;
+  // engraved (done) part — etched look
+  const cut = full * THREE.MathUtils.clamp(prog, 0, 1);
+  engraveCtx.save();
+  engraveCtx.beginPath(); engraveCtx.rect(0, 0, x0 + cut, ch); engraveCtx.clip();
+  engraveCtx.fillStyle = 'rgba(255,255,255,0.16)';
+  engraveCtx.fillText(txt, x0, y + 2);
+  engraveCtx.fillStyle = 'rgba(255,190,120,0.92)';
+  engraveCtx.fillText(txt, x0, y);
+  engraveCtx.restore();
+  // bright laser head glow at the cut
+  if (prog > 0.01 && prog < 0.99) {
+    const hx = x0 + cut;
+    const grd = engraveCtx.createRadialGradient(hx, y, 0, hx, y, 26);
+    grd.addColorStop(0, 'rgba(255,235,200,1)'); grd.addColorStop(1, 'rgba(255,160,80,0)');
+    engraveCtx.fillStyle = grd; engraveCtx.beginPath(); engraveCtx.arc(hx, y, 26, 0, 7); engraveCtx.fill();
+  }
+  engraveMat.map.needsUpdate = true;
+}
+
+/* ============================================================
+   WATER DROPLETS on the front glass (refractive) — water-resistance beat
+   ============================================================ */
+function buildDroplets(box) {
+  dropletGroup = new THREE.Group();
+  const frontX = box.min.x;                 // screen/front faces -X
+  const H = box.max.y - box.min.y, W = box.max.z - box.min.z;
+  const cy = (box.min.y + box.max.y) / 2, cz = (box.min.z + box.max.z) / 2;
+  const geo = new THREE.SphereGeometry(1, 20, 16);
+  const mat = new THREE.MeshPhysicalMaterial({
+    transmission: 1.0, thickness: 0.6, roughness: 0.04, metalness: 0,
+    ior: 1.33, clearcoat: 1, clearcoatRoughness: 0.05,
+    transparent: true, opacity: 1, depthWrite: false,
+    envMapIntensity: 1.4, color: 0xffffff, attenuationColor: 0xeaf6ff, attenuationDistance: 2,
+  });
+  const N = MOBILE ? 10 : 20;
+  for (let i = 0; i < N; i++) {
+    const m = new THREE.Mesh(geo, mat.clone());
+    const r = (0.02 + Math.random() * 0.055) * H;
+    m.userData = {
+      r, y0: cy + (Math.random() - 0.5) * H * 0.78,
+      z: cz + (Math.random() - 0.5) * W * 0.66,
+      yoff: 0, speed: 0.6 + Math.random() * 0.9, ph: Math.random() * 9, wob: 0.3 + Math.random() * 0.7,
+    };
+    m.scale.set(r * 0.42, r, r);            // flattened bead bulging along -X
+    m.position.set(frontX - r * 0.45, m.userData.y0, m.userData.z);
+    m.renderOrder = 8;
+    dropletGroup.add(m);
+  }
+  dropletGroup.visible = false;
+  scene.add(dropletGroup);
 }
 
 /* ============================================================
@@ -826,8 +1136,6 @@ function buildShafts() {
    ============================================================ */
 const track = document.getElementById('track');
 const progEl = document.getElementById('prog');
-const cineTop = document.getElementById('cineTop');
-const cineBot = document.getElementById('cineBot');
 
 /* embedded mode: родительская страница задаёт прогресс скролла через postMessage */
 let __extProg = null;
@@ -836,8 +1144,14 @@ addEventListener('message', (e) => {
   if (d && d.iph3d === 1 && typeof d.p === 'number') __extProg = d.p;
 });
 function scrollProgress() {
-  if (location.hash === '#display') return 3 / NSEG;   // deep-link / inspection helper
+  if (location.hash === '#display') return IDX.display / NSEG;   // deep-link / inspection helper
   if (location.hash === '#finale') return 1.0;
+  if (location.hash === '#camera') return IDX.macro / NSEG;
+  if (location.hash === '#explode') return IDX.explode / NSEG;
+  if (location.hash === '#engrave') return IDX.engrave / NSEG;
+  if (location.hash === '#colors') return IDX.colors / NSEG;
+  if (location.hash === '#blue') return (IDX.colors + 1) / NSEG;
+  if (location.hash === '#silver') return (IDX.colors + 2) / NSEG;
   if (__extProg !== null) return THREE.MathUtils.clamp(__extProg, 0, 1);  // встроенный режим
   const max = track.offsetHeight - innerHeight;
   return max > 0 ? THREE.MathUtils.clamp(scrollY / max, 0, 1) : 0;
@@ -864,8 +1178,13 @@ function midBump(p, width) {
 }
 // macro gate centered on section 03 (index 2 -> p = 2/NSEG)
 function macroGate(p) {
-  const c = 2 / NSEG;
+  const c = IDX.macro / NSEG;
   return 1 - Math.min(Math.abs(p - c) / (0.5 / NSEG * 0.9), 1);
+}
+// generic gate centered on section i
+function sectionGate(i, p, w) {
+  const c = i / NSEG;
+  return 1 - Math.min(Math.abs(p - c) / ((0.5 / NSEG) * (w || 1)), 1);
 }
 
 const cur = { theta: SECTIONS[0].theta, phi: SECTIONS[0].phi, dist: SECTIONS[0].dist,
@@ -886,14 +1205,9 @@ function updateHUD(p) {
   if (nearest !== activeIdx) {
     activeIdx = nearest;
     triggerCount(nearest);
-    if (nearest === 3) powerOnStart = performance.now();   // screen power-on flash on entering Display
+    if (nearest === IDX.display) powerOnStart = performance.now();   // screen power-on flash on entering Display
   }
   progEl.style.width = (p * 100).toFixed(2) + '%';
-
-  // cinematic letterbox in middle of scroll
-  const cineAmt = THREE.MathUtils.clamp((Math.min(p, 1 - p) - 0.12) / 0.14, 0, 1);
-  const bar = (cineAmt * (MOBILE ? 5 : 7)).toFixed(2) + 'vh';
-  cineTop.style.height = bar; cineBot.style.height = bar;
 }
 
 function triggerCount(i) {
@@ -945,6 +1259,26 @@ function tick() {
   // intro materialization (phone assembles from particles on first load)
   const introEase = ready ? smooth(THREE.MathUtils.clamp((performance.now() - introStart) / 2000, 0, 1)) : 0;
   const inIntro = introEase < 1;
+
+  // #1 opening title card: branded splash during load, then dissolves as the phone assembles
+  if (!titleDone) {
+    if (!ready) {
+      titleCardEl.style.opacity = '1';
+      tcLineEl.style.width = (70 + 170 * (0.5 + 0.5 * Math.sin(t * 2.2))).toFixed(0) + 'px';
+    } else if (scrollY < innerHeight * 0.4) {
+      const rawT = THREE.MathUtils.clamp((performance.now() - introStart) / 2000, 0, 1);
+      tcLineEl.style.width = '240px';
+      const fade = 1 - smooth(THREE.MathUtils.clamp((rawT - 0.4) / 0.5, 0, 1));
+      titleCardEl.style.opacity = fade.toFixed(3);
+      titleCardEl.style.transform = 'scale(' + (1 + (1 - fade) * 0.05).toFixed(3) + ')';
+      if (rawT >= 1) { titleCardEl.style.display = 'none'; titleDone = true; }
+    } else {
+      titleCardEl.style.display = 'none'; titleDone = true;
+    }
+  }
+
+  // #3 rhythm beat blackout — removed per request
+  beatFadeEl.style.opacity = '0';
   // pointer parallax easing
   px += (pxT - px) * 0.05; py += (pyT - py) * 0.05;
 
@@ -958,8 +1292,9 @@ function tick() {
   cur.ty    += (kf.ty    - cur.ty)    * k;
   cur.tx    += (kf.tx    - cur.tx)    * k;
 
-  // handheld micro-drift (dutch angle + drift) — damped during macro (sec 03) for a stable close-up
-  const gate = macroGate(p);
+  // handheld micro-drift (dutch angle + drift) — damped during close-ups (macro + engraving) for a stable shot
+  const engGate = sectionGate(IDX.engrave, p, 0.9);
+  const gate = Math.max(macroGate(p), engGate);
   const steady = 1 - THREE.MathUtils.clamp(gate, 0, 1);
   const dr = (REDUCE ? 0 : 1) * steady;
   const driftT = (Math.sin(t * 0.45) * 1.1 + Math.sin(t * 0.21) * 0.7) * dr;
@@ -969,8 +1304,11 @@ function tick() {
   const theta = THREE.MathUtils.degToRad(cur.theta + driftT + px * 4.5 * steady * (inIntro ? 0 : 1));
   const phi = THREE.MathUtils.degToRad(THREE.MathUtils.clamp(cur.phi + driftP - py * 3.0 * steady * (inIntro ? 0 : 1), 16, 152));
 
-  // FIT logic: never closer than whole-phone fit, except macro (sec 03)
-  const allowedMin = THREE.MathUtils.lerp(1.0, 0.40, THREE.MathUtils.clamp(gate, 0, 1));
+  // FIT logic: never closer than whole-phone fit, except macro (tight) and engraving (moderate close-up)
+  const allowedMin = Math.min(
+    THREE.MathUtils.lerp(1.0, 0.40, THREE.MathUtils.clamp(macroGate(p), 0, 1)),
+    THREE.MathUtils.lerp(1.0, 0.62, THREE.MathUtils.clamp(engGate, 0, 1))
+  );
   let dist = Math.max(cur.dist * fitDist, fitDist * allowedMin * 0.99);
 
   target.set(cur.tx * modelRadius, cur.ty * modelRadius, 0);
@@ -994,10 +1332,11 @@ function tick() {
   // epic beats: power-on flash (entering Display) + climax beat (Camera->Display swing)
   const powerOn = REDUCE ? 0 : Math.max(0, 1 - (performance.now() - powerOnStart) / 650);
   const powerPulse = powerOn * powerOn;
-  const beat = REDUCE ? 0 : (1 - Math.min(Math.abs(p - 0.5) / 0.06, 1));
+  const beatC = ((IDX.macro + IDX.display) / 2) / NSEG;   // climax on the Camera→Display swing
+  const beat = REDUCE ? 0 : (1 - Math.min(Math.abs(p - beatC) / 0.05, 1));
   bloom.strength = 0.24 + beat * 0.22 + powerPulse * 0.5;
-  anamorphicPass.uniforms.uStrength.value = 0.5 + powerPulse * 0.7 + beat * 0.2;
-  afterimage.uniforms['damp'].value = REDUCE ? 0 : Math.min(scrollVel * 0.9, 0.74);   // speed-trails
+  // anamorphic streaks: keep subtle, and suppress entirely on the macro close-up so dark areas (lidar) stay clean
+  anamorphicPass.uniforms.uStrength.value = (0.4 + powerPulse * 0.6 + beat * 0.2) * (1 - 0.95 * THREE.MathUtils.clamp(macroGate(p), 0, 1));
 
   // glow billboard: behind phone along camera->target axis, faces camera
   camera.getWorldDirection(camDir);
@@ -1016,7 +1355,7 @@ function tick() {
   pMat.uniforms.uConverge.value = smooth(THREE.MathUtils.clamp((p - 0.86) / 0.14, 0, 1));
   // live display plane: always present (dark) when facing camera, brightens to lock-screen in Display/finale
   if (screenPlane) {
-    const dispW = 1 - Math.min(Math.abs(p - 3 / NSEG) / (0.5 / NSEG * 1.1), 1);
+    const dispW = 1 - Math.min(Math.abs(p - IDX.display / NSEG) / (0.5 / NSEG * 1.1), 1);
     const finW = smooth(THREE.MathUtils.clamp((p - 0.9) / 0.1, 0, 1));
     const lit = Math.max(smooth(dispW), finW);
     const bodyFade = 1 - 0.55 * Math.sin(THREE.MathUtils.clamp(dissCur, 0, 1) * Math.PI);
@@ -1039,6 +1378,11 @@ function tick() {
   pMat.uniforms.uTime.value = t;
   pMat.uniforms.uScroll.value = p;
   pMat.uniforms.uBurst.value = Math.max(scrollVel, beat * 0.7);
+  // fade particles out on the macro camera close-up so additive orange dots don't bleed over the dark lidar
+  pMat.uniforms.uFade.value = 1 - 0.92 * THREE.MathUtils.clamp(macroGate(p), 0, 1);
+  // fade volumetric shafts on the macro close-up too (keep dark background clean)
+  const shaftFade = 1 - 0.9 * THREE.MathUtils.clamp(macroGate(p), 0, 1);
+  for (let i = 0; i < shafts.length; i++) shafts[i].material.opacity = shafts[i].userData.baseOp * shaftFade;
 
   // dissolve / reassemble at transitions (+ velocity) + intro materialization
   const dissTarget = REDUCE ? 0 : THREE.MathUtils.clamp(Math.max(midBump(p, 0.5/NSEG*0.8), scrollVel * 0.5), 0, 1);
@@ -1054,6 +1398,88 @@ function tick() {
     const fade = (1 - 0.55 * Math.sin(THREE.MathUtils.clamp(dissCur, 0, 1) * Math.PI)) * introEase;
     for (let i = 0; i < phoneMats.length; i++) phoneMats[i].opacity = phoneMats[i]._baseOpacity * fade;
   }
+
+  // ============ WATER DROPLETS — removed per request ============
+  if (dropletGroup && dropletGroup.visible) dropletGroup.visible = false;
+
+  // ============ EXPLODED VIEW + X-RAY (section 02) ============
+  const exTarget = REDUCE ? 0 : smooth(THREE.MathUtils.clamp(sectionGate(IDX.explode, p, 0.92), 0, 1));
+  curExplode += (exTarget - curExplode) * (1 - Math.pow(0.0015, dt));
+  if (explodeLayers.length) {
+    for (let i = 0; i < explodeLayers.length; i++) {
+      const L = explodeLayers[i];
+      const d = explodeDist * L.factor * curExplode;
+      L.mesh.position.set(L.base.x + L.dir.x * d, L.base.y + L.dir.y * d, L.base.z + L.dir.z * d);
+    }
+  }
+  for (let i = 0; i < internalLayers.length; i++) {
+    const m = internalLayers[i];
+    m.position.x = m.userData.base.x + explodeDist * m.userData.factor * curExplode;
+    m.material.opacity = curExplode;
+    if (m.userData.halo) m.userData.halo.material.opacity = curExplode * (0.45 + 0.3 * Math.sin(t * 2 + i));
+  }
+  // project HUD labels onto the layers
+  if (explodeLabels.length) {
+    const Wp = innerWidth, Hp = innerHeight;
+    for (const L of explodeLabels) {
+      if (!L.el) continue;
+      if (curExplode < 0.04) { L.el.style.opacity = '0'; continue; }
+      _projV.copy(L.get()); _projV.project(camera);
+      if (_projV.z > 1) { L.el.style.opacity = '0'; continue; }
+      const sx = (_projV.x * 0.5 + 0.5) * Wp, sy = (-_projV.y * 0.5 + 0.5) * Hp;
+      const dy = L.dy || -70;
+      L.el.style.left = sx.toFixed(1) + 'px';
+      L.el.style.top = sy.toFixed(1) + 'px';            // anchor = dot sits exactly on the part
+      L.leader.style.top = Math.min(0, dy) + 'px';
+      L.leader.style.height = Math.abs(dy) + 'px';
+      L.txt.style.top = dy + 'px';
+      L.el.style.opacity = (curExplode * 0.97).toFixed(2);
+    }
+  }
+
+  // ============ COLORWAY SWITCH (3 dedicated sections: Orange→Blue→Silver, turntable) ============
+  if (bodyMats.length) {
+    const fp = p * NSEG - IDX.colors;                  // 0=Orange · 1=Blue · 2=Silver
+    const inCol = THREE.MathUtils.clamp(1 - Math.max(0, Math.max(-(fp + 0.5), fp - 2.5)) / 0.5, 0, 1);
+    const fc = THREE.MathUtils.clamp(fp, 0, 2);
+    const i0 = Math.min(Math.floor(fc), 1), f = smooth(fc - i0);
+    for (const m of bodyMats) {
+      (FINISH[i0] ? _fa.copy(FINISH[i0]) : _fa.copy(m._baseColor));
+      (FINISH[i0 + 1] ? _fb.copy(FINISH[i0 + 1]) : _fb.copy(m._baseColor));
+      _ft.copy(_fa).lerp(_fb, f);
+      m.color.copy(m._baseColor).lerp(_ft, inCol);
+    }
+  }
+
+  // ============ LASER ENGRAVING (dedicated close-up section) ============
+  if (engraveMat) {
+    const c5 = IDX.engrave / NSEG, half = 0.5 / NSEG;
+    // reveal only AFTER the camera has settled into the close-up: starts ~85% through the approach, finishes just past center
+    const prog = THREE.MathUtils.clamp((p - (c5 - half * 0.15)) / (half * 0.7), 0, 1);
+    const eo = THREE.MathUtils.clamp(sectionGate(IDX.engrave, p, 1.0), 0, 1);
+    engraveMat.opacity = eo;
+    if (Math.abs(prog - engraveDrawn) > 0.004) { drawEngrave(prog); engraveDrawn = prog; }
+    if (sparkPts) {
+      const active = eo > 0.05 && prog > 0.02 && prog < 0.985 ? 1 : 0;
+      sparkMat.opacity = active;
+      if (active) {
+        const u = sparkPts.userData, pos = sparkPts.geometry.attributes.position, seed = sparkPts.geometry.attributes.aSeed;
+        // text plane has scale.x = -1, so the world print-head runs opposite to canvas progress — match it
+        const headZ = -(prog - 0.5) * u.W * 0.6;
+        const px = u.box.max.x + 0.01, py = u.plane.position.y;
+        for (let i = 0; i < pos.count; i++) {
+          const s = seed.getX(i), tt = (t * (1.2 + s) + s * 9) % 1;
+          // sparks spray backwards from the head (trailing the cut) + upward scatter
+          pos.setXYZ(i, px + tt * 0.12 * s, py + (Math.sin((s + t) * 30) * 0.18) * tt, headZ - tt * 0.10 * (0.4 + s) + (s - 0.5) * 0.05);
+        }
+        pos.needsUpdate = true;
+      }
+    }
+  }
+
+  // ============ MOTION BLUR (fast scroll) ============
+  motionPass.uniforms.uAmt.value = REDUCE ? 0 : Math.min(scrollVel * 0.9, 0.85);
+  motionPass.uniforms.uDir.value.set(0.94, 0.34);
 
   // glitch removed per request
   grainPass.uniforms.uTime.value = t;
@@ -1071,9 +1497,9 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
   composer.setSize(innerWidth, innerHeight);
   bloom.setSize(innerWidth, innerHeight);
-  afterimage.setSize(innerWidth, innerHeight);
   dofPass.uniforms.uTexel.value.set(1 / innerWidth, 1 / innerHeight);
   anamorphicPass.uniforms.uTexel.value.set(1 / innerWidth, 1 / innerHeight);
+  motionPass.uniforms.uTexel.value.set(1 / innerWidth, 1 / innerHeight);
 });
   </script>
 </body>
